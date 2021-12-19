@@ -10,7 +10,7 @@
           <a>
             <p style="text-align: center">查看更多消息</p>
           </a>
-          <message v-for="(item, index) in getList" :key="index" :data="item" :code="code" />
+          <message :data='messageList' :code="code"/>
         </ul>
       </div>
     </div>
@@ -22,9 +22,9 @@
 
 <script setup>
 import { onMounted, ref, computed, onUpdated, watch } from 'vue'
+import Message from '../message/message.vue';
 import SlideRight from './SlideRight.vue';
 import { useStore } from "vuex";
-import Message from '../message/message.vue';
 
 onMounted(() => {
   scroll()
@@ -35,9 +35,11 @@ onUpdated(() => {
 })
 const store = useStore();
 const code = computed(() => store.getters.getMemberInfo.code)
-const getMessageList = computed(() => store.getters['sessionList/getMessageLists'])
-const getList = computed(() => store.getters['sessionList/getList'])
+const messageList = computed(() => store.getters['sessionList/getMessageLists'])
 const detail = computed(() => store.getters["sessionList/getSelectInfo"]);
+
+
+console.log(messageList.value);
 
 const url = ref('');
 const centerDialogVisible = ref(false)
@@ -60,8 +62,8 @@ const showPicture = (url) => {
   display: flex;
   background-color: #f5f5f5;
   flex-direction: column;
-  width: 488px;
-  height: 440px;
+  width: 688px;
+  height: 640px;
 
   .page-top {
     display: flex;
@@ -89,14 +91,14 @@ const showPicture = (url) => {
 
   .page-center {
     width: 100%;
-    height: 380px;
+    height: 580px;
     background-color: #f5f5f5;
 
     .message {
       background-color: #f5f5f5;
       overflow: auto;
-      width: 488px;
-      height: 380px;
+      widows: 100%;
+      height: 100%;
       .image {
         max-width: 288px;
         max-height: 100px;

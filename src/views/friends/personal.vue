@@ -17,14 +17,14 @@
       <div class="base-data">
         <label>备&nbsp;&nbsp;&nbsp;注</label>
         <div class="value fl">
-          <el-input
-            v-model="detail.config.remarks"
+          <!-- <el-input
+            v-model='detail.config.remarks'
             clearable
             size="mini"
             @blur="blur_update_remarks"
             @change="change_update_remarks"
             placeholder="点击添加备注"
-          />
+          /> -->
         </div>
         <div class="clear"></div>
 
@@ -76,25 +76,15 @@ const update_friend_remarks = () => {
 </script>
 
 <style lang="scss">
-.bri_deb_input {
-  width: 150px;
-  height: 22px;
-  border: none;
-  border-bottom: 1px black solid;
-  background-color: #f2f2f2;
-  font-size: 14px;
-  margin-top: -1px;
-}
-
 .detail-page {
-  width: 488px;
+  width: 688px;
   background-color: white;
 
   //个人资料详情
   .personal-detail {
     width: 370px;
     margin: auto;
-    margin-top: 80px;
+    margin-top: 180px;
 
     .fl {
       float: left;
@@ -252,7 +242,7 @@ const update_friend_remarks = () => {
         width: 138px;
         height: 36px;
         line-height: 36px;
-        background-color: #01AD19;
+        background-color: #01ad19;
         font-size: 14px;
         border: none;
         color: white;

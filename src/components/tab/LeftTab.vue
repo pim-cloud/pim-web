@@ -15,7 +15,7 @@
     </div>
 
     <!--网络检测-->
-    <div style="flex-grow: 3.5;" class="center">
+    <div style="flex-grow: 8;" class="center">
       <svg class="icon" style="font-size: 20px" aria-hidden="true">
         <use v-if="socket" style="color: #07C160" xlink:href="#icon-wuxianwangluo" />
         <use v-else style="color: red" xlink:href="#icon-wuwangluo" />
@@ -86,7 +86,7 @@ watch(() => token.value, () => {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: #2e2e2e;
   width: 54px;
-  height: 600px;
+  height: 800px;
   border-radius: 3px;
   display: flex;
   flex-direction: column;

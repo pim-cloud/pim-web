@@ -25,8 +25,8 @@
 
 <style scoped lang="scss">
 .welcome {
-  width: 488px;
-  height: 600px;
+  width: 688px;
+  height: 800px;
   background-color: #f5f5f5;
   .svg {
     text-align: center;

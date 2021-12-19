@@ -10,8 +10,6 @@
   </div>
 </template>
 <script setup>
-import { defineEmits } from "vue";
-
 const emit = defineEmits(['select'])
 const select = () => {
   emit("select")

@@ -35,6 +35,7 @@
         </el-upload>
       </div>
     </div>
+    <EmojiPicker :native="true" @select="onSelectEmoji" />
     <div class="text">
       <textarea placeholder="Enter" v-model="text" @keyup="inputing"></textarea>
     </div>
@@ -130,7 +131,7 @@ const beforeUpload = async (file) => {
 
 <style lang="scss" scoped>
 .m-text {
-  width: 488px;
+  width: 688px;
   height: 160px;
   display: flex;
   flex-direction: column;
@@ -175,12 +176,12 @@ const beforeUpload = async (file) => {
   }
   .text {
     height: 63px;
-    width: 488px;
+    width: 688px;
   }
 
   textarea {
     height: 63px;
-    width: 448px;
+    width: 648px;
     padding-left: 20px;
     padding-right: 20px;
     font-size: 15px;

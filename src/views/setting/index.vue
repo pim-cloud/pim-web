@@ -34,8 +34,8 @@ import Currency from "../../components/setting/Currency.vue";
 
 #setting {
   background-color: #F5F5F5;
-  width: 739px;
-  height: 600px;
+  width: 939px;
+  height: 800px;
 
   .account-settings {
     width: 500px;

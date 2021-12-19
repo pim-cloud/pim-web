@@ -85,7 +85,7 @@ const menus = ref([msgTopping, nodisturb, setRemarks, delSession])
   #session_lists {
     background-color: #f5f5f5;
     width: 250px;
-    height: 600px;
+    height: 800px;
     border-right: solid 1px #d6d6d6;
 
     /*搜索框*/

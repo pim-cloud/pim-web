@@ -78,8 +78,8 @@ const updateApply = (item, status) => {
 
 <style scoped lang="scss">
 .news-friends {
-  width: 488px;
-  height: 600px;
+  width: 688px;
+  height: 800px;
   background-color: #f5f5f5;
 
   .news-friends-top {

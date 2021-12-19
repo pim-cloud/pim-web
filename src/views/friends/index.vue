@@ -83,7 +83,7 @@ const select = (data) => {
   .search-list-tool {
     background-color: rgb(231, 232, 233);
     width: 250px;
-    height: 600px;
+    height: 800px;
     border-right: solid 1px #d6d6d6;
 
     .friend-search {
@@ -97,7 +97,7 @@ const select = (data) => {
     //滑动条区域
     .lists {
       width: 250px;
-      height: 540px;
+      height: 740px;
       overflow-y: scroll;
       overflow-x: hidden;
       position: relative; //绝对定位可以滚动

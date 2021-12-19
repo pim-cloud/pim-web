@@ -242,7 +242,7 @@ const close = () => {
 }
 .sliding-frame {
   width: 250px;
-  height: 600px;
+  height: 800px;
   background-color: #f5f5f5;
   z-index: 1;
   position: absolute;
@@ -329,11 +329,11 @@ const close = () => {
     }
 
     .slide {
-      height: 540px;
+      height: 700px;
       overflow: auto;
 
       .group-member-list {
-        //height: 250px;
+        max-height: 290;
         display: flex;
         flex-wrap: wrap;
         align-content: flex-start;

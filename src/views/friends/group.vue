@@ -41,7 +41,7 @@ const { createSessions } = sessionEffect();
 
 <style scoped lang="scss">
 .detail-page {
-  width: 488px;
+  width: 688px;
   background-color: white;
 
   //个人资料详情
@@ -162,13 +162,29 @@ const { createSessions } = sessionEffect();
     }
 
     .group-member {
-      height: 390px;
+      height: 490px;
 
       .group-member-list {
         cursor: pointer;
         display: flex;
         flex-wrap: wrap;
         padding: 40px;
+        max-height: 430px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        position: relative;
+
+        &::-webkit-scrollbar {
+          z-index: 1;
+          width: 4px;
+          background-color: #f5f5f5;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          height: 3px;
+          border-radius: 5px;
+          background: #aeacaa;
+        }
 
         li {
           padding: 8px;
@@ -182,7 +198,7 @@ const { createSessions } = sessionEffect();
     }
 
     .group-send {
-      height: 150px;
+      height: 250px;
       display: flex;
       justify-content: center; //左右居中
       align-items: center; //上下居中
@@ -191,7 +207,7 @@ const { createSessions } = sessionEffect();
         width: 138px;
         height: 36px;
         line-height: 36px;
-        background-color: #01AD19;
+        background-color: #01ad19;
         font-size: 14px;
         border: none;
         color: white;
