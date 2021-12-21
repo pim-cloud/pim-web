@@ -1,6 +1,6 @@
 <template>
   <el-dropdown-item @click="onShow">创建群聊</el-dropdown-item>
-  <el-dialog v-model="showStatus" @close="clearData" width="550px" append-to-body>
+  <el-dialog v-model="showStatus" width="550px" append-to-body>
     <div class="creat-group">
       <div class="friend-list">
         <div v-for="(value,initials) in contactFriends" :key="initials">
@@ -121,7 +121,6 @@ const createGroups = (nickname) => {
     nickname: nickname,
     group_member: arr,
   }
-  console.log(data);
   createGroup(data).then((res) => {
     if (res.code != 200) {
       ElMessage.error("创建失败")

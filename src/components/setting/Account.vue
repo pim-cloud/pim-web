@@ -2,7 +2,7 @@
   <div>
     <!--图片裁剪上传组件-->
     <Cutting>
-      <el-avatar shape="square" :size="100" :fit="fit" :src="member.head_image"></el-avatar>
+      <el-avatar shape="square" :size="100"  :src="member.head_image"></el-avatar>
     </Cutting>
     <p style="font-size: 18px;">{{ member.nickname }}</p>
     <p>{{ member.uid }}</p>

@@ -9,9 +9,6 @@ import store from './store/index'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
-import EmojiPicker from 'vue3-emoji-picker'
-//import 'node_modules/vue3-emoji-picker/dist/style.css'
-
 import VueCropper from 'vue-cropper';
 import { directive, menusEvent, Vue3Menus } from 'vue3-menus';
 

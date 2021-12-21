@@ -47,7 +47,7 @@
 
 <script setup>
 import { sendMessage, fileUpload } from "../../api/message";
-import Expression from "../dropdown/expression.vue";
+import Expression from "../dropdown/Expression.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 
