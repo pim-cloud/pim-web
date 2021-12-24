@@ -1,40 +1,63 @@
 const sessionList = {
     namespaced: true,
     state: {
-        list: {},//会话列表
-        selectInfo: '',//当前选中信息
+        select: '',
+        sessionList: [],
         messageList: {},
-        views: 'SessionLists',//当前选择组件
     },
     mutations: {
-        list(state, list) {
-            if (list.length != 0) {
-                state.list = list;
+        addSession(state,session) {
+            try {
+                state.sessionList.forEach(element => {
+                    if (element.accept_code === session.accept_code) {
+                        throw new Error("已存在，添加失败");
+                    }
+                });
+                state.sessionList.push(session)
+            } catch(e) {
+                return false
             }
         },
-        addSession(state, session) {
-            //增加消息记录
-            let arr = session.accept_code in state.list
-            if (!arr) {
-                state.list[session.accept_code] = session;
+        deleteSession(state,code){
+            try {
+                let list = state.sessionList
+                if (list.length === 1) {
+                    state.sessionList = []
+                    return false;
+                }
+                for(var i = 0;i < list.length ; i++){
+                    if(list[i].accept_code === code){
+                        list.splice(i, 1);
+                    }
+                }
+                state.sessionList = []
+                state.sessionList = list
+              
+            } catch(e) {
+                return false
             }
         },
-        delSession(state, code) {
-            delete state.list[code];
-        },
-        topSession(state,code){
-            console.log(code);
-        },
-        updateRemarks(state,data) {
-            const { acceptCode, remarks } = data;
-            console.log(acceptCode);
-            console.log(remarks);
-            if (state.list[acceptCode]) {
-                state.list[acceptCode].accept_info.remarks = remarks;
+        topSession(state, code) {
+            try {
+                let length = state.sessionList.length
+                if (length === 1) {
+                    return false;
+                }
+                let list = []
+                for(var i = 0;i < length ; i++){
+                    if(state.sessionList[i].accept_code === code){
+                        list.unshift(state.sessionList[i])
+                    } else {
+                        list.push(state.sessionList[i])
+                    }
+                }
+                state.sessionList = list
+            } catch(e) {
+                console.log('置顶失败');
+                return false
             }
         },
-        delMessages(state, code) {
-            //删除本地聊天记录列表
+        deleteMessages(state, code) {
             delete state.messageList[code];
         },
         addMessages(state, list) {
@@ -62,80 +85,42 @@ const sessionList = {
                 state.messageList[accept_code].lists.push(msg);
             }
         },
-        setSelectInfo(state, data) {
-            console.log(data);
-            //设置当前选择的会话
-            state.selectInfo = {
-                session_id: data.session_id,
-                accept_code: data.accept_code,
-                nickname: data.nickname,
-                remarks: data.remarks,
-                session_type: data.session_type,
+        setSelect(state,data){
+           state.select = data 
+        },
+        deleteSelect(state, code) {
+            if (state.select.accept_code === code) {
+                state.select = '';
             }
         },
-        delSelectInfo(state, code) {
-            //防止误删，判断排除一下
-            let { accept_code } = state.selectInfo;
-            if (accept_code == code) {
-                state.selectInfo = '';
-            }
-        },
-        updateSelectInfo(state,data) {
-            console.log('修改选择');
-            console.log(data);
-            console.log(state.selectInfo);
-            if (state.selectInfo.accept_code === data.acceptCode) {
-                state.selectInfo.remarks = data.remarks;
-            }
-        }
     }
     ,
     actions: {
-        //修改会话
-        saveList({ commit }, list) {
-            commit('list', list);
-        },
         //删除会话
         deleteSession({ commit }, code) {
-            commit('delSession', code)//删除session
-            commit('delSelectInfo', code)//删除当前选择
-            commit('delMessages', code)//删除消息记录
+            commit('deleteSession', code)//删除session
+            commit('deleteSelect', code)//删除当前选择
+            commit('deleteMessages', code)//删除消息记录
         },
         //给消息列表添加一条消息
-        addMessage({ commit, state }, message) {
-            //添加一条消息
+        addMessage({ commit }, message) {
             commit('addMessage', message)
-            //判断当前是否处于聊天框中，增加未读提示红点
-            if (state.selectInfo.accept_code != message.accept_code) {
-                //增加小红点未读数
-            }
         }
     },
     getters: {
-        //获取会话列表
-        getSessionList(state) {
-            return state.list;
+        select(state) {
+            return state.select;
         },
-        getSelectInfo(state) {
-            return state.selectInfo;
+        sessionList(state) {
+            return state.sessionList
         },
-        getMessageLists(state) {
-            return state.messageList[state.selectInfo.accept_code];
-        },
-        getList(state) {
-            if (JSON.stringify(state.messageList) != '{}') {
-                if (state.selectInfo.accept_code in state.messageList) {
-                    return state.messageList[state.selectInfo.accept_code].lists
-                }
+        messageList (state) {
+            if (state.select.accept_code in state.messageList) {
+                return state.messageList[state.select.accept_code].lists
             }
         },
-        getListItem(state, code){
-            console.log(code);
-            let res = code in state.list
-            if (!res) {
-                return false
-            }
-            return true
+        messageInfo(state) {
+            return state.messageList[state.select.accept_code]
         }
     }
 }

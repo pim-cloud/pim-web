@@ -69,8 +69,6 @@ const updateApply = (item, status) => {
         session_type: 'personal',
         accept_code: item.send_code,
       })
-      //更新本地消息列表
-      memberEffect().getContactFriendsList()
     }
   });
 }

@@ -31,7 +31,7 @@
 import store from "../../store/index";
 import { login } from "../../api/passport";
 import { encrypt } from "../../utils/encrypt";
-import memberEffect from "../../utils/memberEffect";
+import commonEffect from "../../utils/commonEffect";
 
 export default {
   data() {
@@ -61,8 +61,7 @@ export default {
             this.isLoading = false;
             //缓存数据
             if (store.state.global.token) {
-              memberEffect().getContactGroupLists();
-              memberEffect().getContactFriendsList();
+              commonEffect().init()
               this.$router.push("/");
             } else {
               this.$router.replace("/login");

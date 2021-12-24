@@ -10,6 +10,7 @@ import {
     getGroupDetail,
     getMemberDetailByUid
 } from '../api/relation'
+import sessionEffect from "./sessionEffect";
 
 const memberEffect = () => {
     //好友群组列表
@@ -50,19 +51,17 @@ const memberEffect = () => {
 
     const getSelectDetail = (data) => {
       let params = { code: data.code };
-        //修改当前选中的条目类型
-        store.commit("friendsList/updateThisSelectCodeAndType", data)
         if (data.type === 'group') {
           getGroupDetail(params).then((res) => {
             if (res['code'] === 200) {
-              store.commit("friendsList/updateSelectCodeDetail", res["data"])
+              store.commit("friendsList/updateSelect", res["data"])
             }
           })
         }
         if (data.type === "personal") {
           getFriendDetail(params).then((res) => {
             if (res['code'] === 200) {
-              store.commit("friendsList/updateSelectCodeDetail", res["data"])
+              store.commit("friendsList/updateSelect", res["data"])
             }
           })
         }
@@ -78,8 +77,11 @@ const memberEffect = () => {
     }
     //联系人编辑
     const editContacts = (data) => {
+      if (data.type === 'topping') {
+        //sessionEffect().setToppings({ sessionId: data.sessionId });
+      }
       editFriend(data).then((res) => {
-        //ElMessage.success("success");
+        store.commit('common/updateConfig', data)
       })
     }
 

@@ -46,7 +46,6 @@ const socketEffect = () => {
                     switch (result.message_type) {
                         case "chat":
                             ElMessage.info('收到一条消息')
-                            console.log(result);
                             let accept_code = ''
                             if (result.accept_type === 'group') {
                                 this.accept_code = result.accept_code
@@ -69,7 +68,7 @@ const socketEffect = () => {
                             break;
                         case "add_friend_reply":
                             noticeEffect().renderTab('SessionLists')
-                            memberEffect().getContactFriendsList()//刷新好友列表
+                            //memberEffect().getContactFriendsList()//刷新好友列表
                             //缓存选择聊天对象信息
                             sessionEffect().createSessions({
                                 session_type: 'personal',

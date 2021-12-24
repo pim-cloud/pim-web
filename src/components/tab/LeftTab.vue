@@ -40,8 +40,8 @@ const data = reactive({
 })
 
 const store = useStore();
-const member = computed(() => store.getters.getMemberInfo)
-const socket = computed(() => store.getters.getSocket)
+const member = computed(() => store.getters.member)
+const socket = computed(() => store.getters.socket)
 const token = computed(() => store.state.token)
 
 memberEffect().getMember();

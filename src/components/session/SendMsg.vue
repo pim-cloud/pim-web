@@ -52,8 +52,8 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
-const accept = computed(() => store.getters["sessionList/getSelectInfo"])
-const send = computed(() => store.getters.getMemberInfo)
+const accept = computed(() => store.getters["sessionList/select"])
+const send = computed(() => store.getters.member)
 
 const svgSize = 20
 const svgFill = '#4C4C4C'
@@ -63,7 +63,6 @@ const text = ref("");
 const addIcon = (emoji) => {
   let va = ''
   if (text.value != "") {
-    console.log(text.value);
     text.value = text.value + emoji
   } else {
     text.value = emoji

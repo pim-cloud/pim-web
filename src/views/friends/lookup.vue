@@ -45,7 +45,7 @@ import { computed, ref } from 'vue';
 import { useStore } from "vuex";
 
 const store = useStore();
-const member = computed(() => store.getters["getMemberInfo"])
+const member = computed(() => store.getters["member"])
 
 const select_type = ref('personal')
 const keyword = ref('')
@@ -75,7 +75,6 @@ const add = (accept_code) => {
       accept_code: accept_code,
       remarks: "hello",
     };
-    console.log(data);
     requestAddFriends(data).then(() => {
       ElMessage.success("请求发送成功！");
     }
