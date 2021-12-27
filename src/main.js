@@ -13,11 +13,13 @@ import VueCropper from 'vue-cropper';
 import { directive, menusEvent, Vue3Menus } from 'vue3-menus';
 
 import dayjs from "dayjs"
+import DiscordPicker from 'vue3-discordpicker';
 
 const app = createApp(App)
 app.config.globalProperties.$dayjs = dayjs
-app.directive('menus', directive); // 只注册指令
-app.component('vue3-menus', Vue3Menus); // 只注册组件
+app.use(DiscordPicker);
+app.directive('menus', directive);
+app.component('vue3-menus', Vue3Menus);
 app.use(router)
 app.use(store)
 app.use(ElementPlus)

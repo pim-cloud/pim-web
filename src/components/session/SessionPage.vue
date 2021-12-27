@@ -10,7 +10,7 @@
       <div class="message" id="m-message">
         <ul>
           <a>
-            <p style="text-align: center">查看更多消息</p>
+            <!-- <p style="text-align: center">查看更多消息</p> -->
           </a>
           <message
             v-for="(item, index) in messageList"

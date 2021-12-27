@@ -12,7 +12,7 @@
 
     <el-dropdown placement="bottom-end">
       <div class="add-btn">
-        <img src="https://cdn.jksusu.cn/add.png" />
+        <!-- <img src="https://cdn.jksusu.cn/add.png" /> -->
       </div>
       <template #dropdown>
         <el-dropdown-menu>
@@ -29,16 +29,16 @@
 </template>
 
 <script setup>
-import CreateGroup from '../group/CreateGroup.vue';
-import { Search } from '@element-plus/icons'
-import { ref } from 'vue';
+import CreateGroup from "../group/CreateGroup.vue";
+import { Search } from "@element-plus/icons";
+import { ref } from "vue";
 
-const searchF = ref('')
-
+const searchF = ref("");
 </script>
 
 <style lang="scss" >
 .searchs {
+  display: flex;
   width: 232px;
   height: 26px;
   margin-left: 19px;
@@ -50,7 +50,7 @@ const searchF = ref('')
   }
   .el-input {
     width: 185px !important;
-    --el-input-focus-border:#DCDBDA !important;
+    --el-input-focus-border: #dcdbda !important;
   }
   .el-icon {
     --color: #666666 !important;
@@ -58,17 +58,14 @@ const searchF = ref('')
   }
 
   .add-btn {
-    display: inline-block;
     border-radius: 4px;
     width: 25px;
-    height: 100%;
+    height: 24px;
     background-color: #e2e2e2;
     margin-left: 10px;
-    line-height: 25px;
-
-    img {
-      padding: 0 0 0 7px;
-    }
+    background-image: url("https://cdn.jksusu.cn/add.png");
+    background-repeat: no-repeat;
+    background-position: center;
 
     &:hover {
       background-color: #d1d1d1;

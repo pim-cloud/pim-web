@@ -1,12 +1,16 @@
 <template>
   <li>
     <div :class="data.main_code === member.code ? 'right' : 'left'">
-      <p class="time">12:00</p>
+      <div class="times">
+        <p class="time">{{ jisuan(data.created_at) }}</p>
+      </div>
       <el-avatar
         class="avatar"
         shape="square"
         :size="38"
-        :src="data.main_code === member.code?member.head_image:accept.head_image"
+        :src="
+          data.main_code === member.code ? member.head_image : accept.head_image
+        "
         @error="errorHandler"
       ></el-avatar>
       <div class="text" v-if="data.content_type === 'text'">
@@ -17,6 +21,10 @@
 </template>
 
 <script setup>
+import dayjs from "dayjs";
+
+const today = dayjs().format("YYYY-MM-DD");
+
 const { data, member, accept } = defineProps({
   data: {
     required: false,
@@ -31,6 +39,15 @@ const { data, member, accept } = defineProps({
     default: "",
   },
 });
+
+const jisuan = (time) => {
+  let today = dayjs().format("YYYY-MM-DD");
+  let thisTime = dayjs(time).format("YYYY-MM-DD");
+  if (today === thisTime) {
+    return dayjs(time).format("HH:mm");
+  }
+  return dayjs(time).format("YYYY年MM月DD日 HH:mm");
+};
 </script>
 
 <style lang="scss">
@@ -54,9 +71,18 @@ li {
       margin: 0 10px 0 10px;
     }
   }
+  .times {
+    display: flex;
+    justify-content: center;
 
-  .time {
-    text-align: center;
+    .time {
+      padding: 0 5px 0 5px;
+      background-color: #dadada;
+      text-align: center;
+      font-size: 5px;
+      color: white;
+      border-radius: 3px;
+    }
   }
 
   .avatar {

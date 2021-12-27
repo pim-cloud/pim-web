@@ -1,19 +1,10 @@
 <template>
-  <div class="page-top-dian" @click="displays(slide)">
-    <img src="https://cdn.jksusu.cn/diandaindian.png" />
-  </div>
+  <div class="page-top-dian" @click="displays(slide)"></div>
   <div v-if="slideStatus" class="sliding-frame">
     <div v-if="select.accept_type == 'personal'" class="person">
-      <div class="sliding-frame-top juli">
+      <div class="sliding-frame-top">
         <div class="frame">
-          <div
-            style="
-              width: 42px;
-              height: 42px;
-              background: url(https://cdn.jksusu.cn/page-add.png);
-              background-size: 100%;
-            "
-          ></div>
+          <div class="add"></div>
           <span style>添加</span>
         </div>
         <div class="frame">
@@ -26,30 +17,31 @@
           <span>{{ personal.name }}</span>
         </div>
       </div>
-      <div class="juli">
-        <div class="open-close-label">
+      <div class="person-edit">
+        <div class="edit">
           <p>消息免打扰</p>
+          <el-switch
+            v-model="personal.disturb"
+            active-color="#13ce66"
+            @click="updateConfig('personal', 'disturb', personal.disturb)"
+          />
         </div>
-        <div
-          class="open-close"
-          @click="updateConfig('personal', 'disturb', personal.disturb)"
-        >
-          <el-switch v-model="personal.disturb" active-color="#13ce66" />
-        </div>
-        <div class="open-close-label">
+
+        <div class="edit">
           <p>置顶聊天</p>
+          <el-switch
+            v-model="personal.topping"
+            active-color="#13ce66"
+            @click="updateConfig('personal', 'topping', personal.topping)"
+          />
         </div>
-        <div class="open-close" @click="updateConfig('personal', 'topping', personal.topping)">
-          <el-switch v-model="personal.topping" active-color="#13ce66" />
-        </div>
-        <div class="open-close-label">
+        <div class="edit">
           <p>星标朋友</p>
-        </div>
-        <div
-          class="open-close"
-          @click="updateConfig('personal', 'star', personal.star)"
-        >
-          <el-switch v-model="personal.star" active-color="#13ce66" />
+          <el-switch
+            v-model="personal.star"
+            active-color="#13ce66"
+            @click="updateConfig('personal', 'star', personal.star)"
+          />
         </div>
       </div>
     </div>
@@ -269,7 +261,11 @@ const close = () => {
   align-items: center;
   width: 25px;
   margin-right: 15px;
+  background-image: url("https://cdn.jksusu.cn/diandaindian.png");
+  background-repeat: no-repeat;
+  background-position: center;
 }
+
 .sliding-frame {
   width: 250px;
   height: 800px;
@@ -280,12 +276,16 @@ const close = () => {
   top: 0;
 
   .person {
+    width: 200px;
+    margin-left: 10px;
+
     .sliding-frame-top {
       display: flex;
       justify-content: flex-start;
       align-items: flex-end;
       height: 90px;
       border-bottom: 1px solid #e2e2e2;
+      margin-left: 10px;
 
       .frame {
         display: flex;
@@ -295,21 +295,33 @@ const close = () => {
         width: 70px;
         height: 70px;
 
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-
         .add {
           width: 42px;
           height: 42px;
           background: url(https://cdn.jksusu.cn/page-add.png);
           background-size: 100%;
-        }
 
-        img {
-          width: 42px;
-          height: 42px;
+          &:hover {
+            background-color: #d9d8d9;
+          }
         }
+      }
+    }
+
+    .person-edit {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-left: 25px;
+      height: 150px;
+      width: 200px;
+
+      .edit {
+        height: 40px;
+        width: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
     }
   }
