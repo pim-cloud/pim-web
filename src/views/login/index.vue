@@ -86,8 +86,8 @@ export default {
   position: absolute;
   background-color: #f5f5f5;
   width: 500px;
-  height: 400px;
-  top: 50%;
+  height: 500px;
+  top: 40%;
   left: 50%;
   margin-top: -200px;
   margin-left: -250px;

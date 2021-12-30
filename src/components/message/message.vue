@@ -16,6 +16,9 @@
       <div class="text" v-if="data.content_type === 'text'">
         {{ data.content }}
       </div>
+      <div class="text" v-if="data.content_type === 'picture'">
+        <img :src="data.content">
+      </div>
     </div>
   </li>
 </template>
@@ -72,6 +75,7 @@ li {
     }
   }
   .times {
+    padding: 10px 0 10px 0;
     display: flex;
     justify-content: center;
 

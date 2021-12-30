@@ -4,8 +4,12 @@ const sessionList = {
         select: '',
         sessionList: [],
         messageList: {},
+        newFriendList:'',
     },
     mutations: {
+        setSessionList(state,list){
+            state.sessionList = list
+        },
         addSession(state,session) {
             try {
                 state.sessionList.forEach(element => {
@@ -93,8 +97,10 @@ const sessionList = {
                 state.select = '';
             }
         },
-    }
-    ,
+        setNewFriendList(state,data) {
+            state.newFriendList = data
+        }
+    },
     actions: {
         //删除会话
         deleteSession({ commit }, code) {

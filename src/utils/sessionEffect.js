@@ -1,6 +1,7 @@
 import store from "../store";
 import router from "../router";
 import { getMsgRecord } from "../api/message";
+import { getFriendsRequestList } from '../api/relation';
 import { createSession, deleteSession, getSessionLists, editSession, toppingSession } from "../api/session";
 
 const sessionEffect = () => {
@@ -39,10 +40,10 @@ const sessionEffect = () => {
     }
    
     //获取消息记录，储存在本地缓存
-    const getMsgRecords = (acceptCode,sessionType,page,perPage) => {
+    const getMsgRecords = (acceptCode,acceptType,page,perPage) => {
         getMsgRecord({
           acceptCode: acceptCode,
-          sessionType: sessionType,
+          acceptType: acceptType,
           page: page,
           perPage: perPage,
         }).then((res) => {
@@ -67,6 +68,14 @@ const sessionEffect = () => {
       toppingSession(data)
     }
 
+    const setNewFriendList = () => {
+      getFriendsRequestList().then((res) => {
+        if (res.code === 200) {
+          store.commit("sessionList/setNewFriendList", res.data)
+        }
+      });
+    }
+
     return {
       setToppings,
       editSessions,
@@ -74,6 +83,7 @@ const sessionEffect = () => {
         createSessions,
         deleteSessions,
         getMsgRecords,
+      setNewFriendList,
     }
 }
 export default sessionEffect

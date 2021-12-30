@@ -84,52 +84,39 @@ const inputing = async (e) => {
   if (e.keyCode === 13 && text.value.length) {
     let content = text.value;
     text.value = "";
-    const message = {
-      main_code: send.value.code,
-      accept_code: accept.value.accept_code,
-      accept_type: accept.value.accept_type,
-      message_type: "chat",
-      content: content,
-      content_type: "text",
-      created_at: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-    };
-
-    store.commit("sessionList/addMessage", message);
-
-    try {
-      await sendMessage(message);
-    } catch (error) {
-      console.log(error);
-    }
+    sends({ content: content, content_type: "text" });
   }
 };
 
 // 发送图片
 const beforeUpload = async (file) => {
-  const accept = store.getters["sessionList/getSelectSessionInfo"];
-  const send = store.state.member;
-
   const formData = new FormData();
   formData.append("file", file);
   const result = await fileUpload(formData);
   const { path } = result.data;
+  sends({ content: path, content_type: "picture" });
+};
 
-  const message = {
-    send_code: send.value.code,
+const sends = async (data) => {
+  if (data.content.replace(/\s*/g, "") === "") {
+    return false;
+  }
+  let msg = {
+    main_code: send.value.code,
     accept_code: accept.value.accept_code,
-    accept_type: accept.value.session_type,
-    content: "http://" + path,
-    content_type: "picture",
+    accept_type: accept.value.accept_type,
+    content: data.content,
+    content_type: data.content_type,
     message_type: "chat",
-    created_at: timer,
+    created_at: dayjs().format("YYYY-MM-DD HH:mm:ss"),
   };
-  store.commit("sessionList/addMessage", message);
+  
+  store.commit("sessionList/addMessage", msg);
 
   try {
-    await sendMessage(message);
-    text.value = "";
+    await sendMessage(msg);
   } catch (error) {
-    text.value = "";
+    console.log(TypeError);
   }
 };
 </script>
@@ -166,7 +153,7 @@ const beforeUpload = async (file) => {
     height: 100%;
   }
   .px-5 {
-    display: none; 
+    display: none;
   }
   .overflow-auto {
     &::-webkit-scrollbar {

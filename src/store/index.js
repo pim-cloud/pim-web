@@ -1,5 +1,5 @@
 import Vuex from "vuex";
-import msgNotice from "./modules/msgnotice";
+import notice from "./modules/notice";
 import global from './modules/global'
 import sessionList from "./modules/sessionlist";
 import friendsList from "./modules/friendslist";
@@ -13,7 +13,7 @@ const store = new Vuex.Store({
         common,
         sessionList,
         friendsList,
-        msgNotice,
+        notice,
     }
 });
 
