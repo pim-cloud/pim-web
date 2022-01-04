@@ -5,7 +5,7 @@
     </div>
     <div class="news-friends-search-input flr">
       <el-input
-        placeholder="请输入"
+        placeholder="请输入邮箱或者pim号"
         v-model="keyword"
         class="input-with-select"
         style="margin-top: 20px"
@@ -35,7 +35,7 @@
           @error="errorHandler"
         ></el-avatar>
         <div class="news-search-info">
-          <p>用户名：{{ item.nickname }}</p>
+          <p>pim：{{ item.username }}</p>
           <p style="font-size: 12.5px; color: #999">
             签名：{{ item.autograph }}
           </p>

@@ -13,7 +13,7 @@
         <div v-for="(item, index) in newFriendLists" :key="index" class="news-search-list">
           <el-avatar shape="square" :size="50" :src="item.head_image" @error="errorHandler"></el-avatar>
           <div class="news-search-info">
-            <p>用户名：{{ item.nickname }}</p>
+            <p>pim:{{ item.username }}</p>
             <p style="font-size: 12.5px;color: #999;">备注：{{ item.remarks }}</p>
           </div>
         <div class="time">

@@ -56,7 +56,7 @@ const socketEffect = () => {
                                 result.accept_code = result?.main_code;
                                 store.dispatch('sessionList/addMessage', result)
                             }
-                            sessionEffect().createSessions({ accept_type: result.accept_type, accept_code: this.accept_code })
+                            sessionEffect().createSessions({ type: result.accept_type, code: this.accept_code })
                             break;
                         case "add_friend":
                             sessionEffect().setNewFriendList()//刷新好友

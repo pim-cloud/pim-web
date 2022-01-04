@@ -7,7 +7,7 @@
 
       <div class="lists">
         <Function @select="select({type:''})"></Function>
-        <div class="labels">群聊</div>
+        <!-- <div class="labels">群聊</div> -->
         <Item
           v-for="(item, index) in group_list"
           :key="index"

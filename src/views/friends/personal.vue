@@ -36,7 +36,7 @@
         <div class="clear"></div>
 
         <label>PIM号</label>
-        <div class="value fl">{{ detail.code }}</div>
+        <div class="value fl">{{ detail.username }}</div>
         <div class="clear"></div>
 
         <label>邮&nbsp;&nbsp;&nbsp;箱</label>
