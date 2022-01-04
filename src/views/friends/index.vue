@@ -6,8 +6,8 @@
       </div>
 
       <div class="lists">
-        <Function @select="select({ type: '' })"></Function>
-        <div class="labels">群聊</div>
+        <Function @select="select({type:''})"></Function>
+        <!-- <div class="labels">群聊</div> -->
         <Item
           v-for="(item, index) in group_list"
           :key="index"
@@ -20,7 +20,7 @@
         />
 
         <!-- 好友list -->
-        <div v-for="(value, initials) in friends_list" :key="initials">
+        <!-- <div v-for="(value, initials) in friends_list" :key="initials">
           <div class="labels">{{ initials }}</div>
           <Item
             v-for="(item, index) in value"
@@ -33,7 +33,17 @@
             :time="item.created_at"
             :class="{ active: selected.code == item.code && selected.type == item.type }"
           />
-        </div>
+        </div> -->
+        <Item
+            v-for="(item, index) in friends_list"
+            :key="index"
+            @click="select(item)"
+            :data="{acceptCode:item.code,accept_type:'personal',id:item.id,showName:item.showName}"
+            v-menus:right="friend_menus"
+            :src="item.head_image"
+            :name="item.showName"
+            :class="{ active: selected.code == item.code && selected.type == item.type }"
+          />
       </div>
     </div>
     <router-view></router-view>
@@ -45,14 +55,17 @@ import { sendMessage, setRemarks, delFriend, quitGroup } from "../../utils/menuE
 import Dropdown from "../../components/dropdown/Dropdown.vue";
 import Function from "../../components/friend/Function.vue";
 import memberEffect from "../../utils/memberEffect";
+import commonEffect from "../../utils/commonEffect";
 import Item from "../../components/list/Item.vue";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref,computed } from "vue";
 import { useRouter } from "vue-router";
+import store from "../../store";
 
+commonEffect().init()
 
 //群组好友列表
-const group_list = reactive(memberEffect().contactGroups);
-const friends_list = reactive(memberEffect().contactFriends);
+const group_list = commonEffect().groupLists;
+const friends_list = commonEffect().friendLists;
 //菜单
 const group_menus = ref([sendMessage, quitGroup,]);
 const friend_menus = ref([sendMessage, setRemarks, delFriend]);
@@ -60,7 +73,7 @@ const friend_menus = ref([sendMessage, setRemarks, delFriend]);
 const router = useRouter()
 const selected = reactive({ code: '', type: '' })
 const select = (data) => {
-  memberEffect().getSelectDetail(data);
+  store.commit('friendsList/updateSelect',{code:data.code,type:data.type})
   if (data.type == '') {
     selected.code = ''
     selected.type = ''

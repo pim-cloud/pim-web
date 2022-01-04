@@ -3,7 +3,7 @@ const global = {
         token: '',
         member: '',
         socket: false,
-        acceptConfig:{},//用户信息
+        slideRight: false,//右侧边栏
     },
     mutations: {
         setToken(state, token) {
@@ -18,25 +18,17 @@ const global = {
         setSocket(state, socket) {
             state.socket = socket;
         },
-        setAccept(state,list) {
-            state.acceptConfig = list
-        },
-        addAccept(state,accept){
-            state.acceptConfig[accept.accept_code] = accept
-        },
-        delAccept(state,code) {
-            delete state.acceptConfig[code];
+        updateSlideRight(state) {
+            //开关右侧边栏
+            !state.slideRight ? state.slideRight = true : state.slideRight = false
         }
     },
     getters: {
-        getMemberInfo(state) {
-            return state.member;
-        },
-        getSocket(state) {
+        socket(state) {
             return state.socket;
         },
-        getAcceptConfig(state,code) {
-            return state.acceptConfig[code];
+        member(state){
+            return state.member
         }
     },
 }

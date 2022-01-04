@@ -9,16 +9,17 @@ import store from './store/index'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
-import EmojiPicker from 'vue3-emoji-picker'
-//import 'node_modules/vue3-emoji-picker/dist/style.css'
-
 import VueCropper from 'vue-cropper';
 import { directive, menusEvent, Vue3Menus } from 'vue3-menus';
 
-const app = createApp(App)
+import dayjs from "dayjs"
+import DiscordPicker from 'vue3-discordpicker';
 
-app.directive('menus', directive); // 只注册指令
-app.component('vue3-menus', Vue3Menus); // 只注册组件
+const app = createApp(App)
+app.config.globalProperties.$dayjs = dayjs
+app.use(DiscordPicker);
+app.directive('menus', directive);
+app.component('vue3-menus', Vue3Menus);
 app.use(router)
 app.use(store)
 app.use(ElementPlus)

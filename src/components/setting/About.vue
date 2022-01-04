@@ -2,7 +2,7 @@
   <div>
     <div>
       <a href="https://github.com/pim-cloud/pim-service" target="_blank">
-        <el-avatar shape="square" :size="100" :fit="fit" src="http://cdn.jksusu.cn/logo.jpg"></el-avatar>
+        <el-avatar shape="square" :size="100" src="http://cdn.jksusu.cn/logo.jpg"></el-avatar>
       </a>
       <el-avatar style="margin-left: 10px" shape="square" :size="100"  src="http://cdn.jksusu.cn/mtwechatbig.jpg"></el-avatar>
     </div>

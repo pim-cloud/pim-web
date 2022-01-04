@@ -36,7 +36,7 @@ const socketEffect = () => {
                 } catch (error) {
                     result = null;
                 }
-
+                console.log(result);
                 if (result) {
                     const { msg_id } = result
                     // 回执消息是否送达
@@ -46,7 +46,6 @@ const socketEffect = () => {
                     switch (result.message_type) {
                         case "chat":
                             ElMessage.info('收到一条消息')
-                            console.log(result);
                             let accept_code = ''
                             if (result.accept_type === 'group') {
                                 this.accept_code = result.accept_code
@@ -57,37 +56,22 @@ const socketEffect = () => {
                                 result.accept_code = result?.main_code;
                                 store.dispatch('sessionList/addMessage', result)
                             }
-                            sessionEffect().createSessions({ session_type: result.accept_type, accept_code: this.accept_code })
+                            sessionEffect().createSessions({ type: result.accept_type, code: this.accept_code })
                             break;
                         case "add_friend":
-                            noticeEffect().renderTab('FriendsLists')
-                            ElMessage({
-                                showClose: true,
-                                message: '收到一条好友申请信息,请在新的朋友列表查看',
-                                type: 'success',
-                            })
+                            sessionEffect().setNewFriendList()//刷新好友
+                            noticeEffect().setNewsFriendList(1)//刷新未读消息
                             break;
                         case "add_friend_reply":
-                            noticeEffect().renderTab('SessionLists')
-                            memberEffect().getContactFriendsList()//刷新好友列表
+                            //memberEffect().getContactFriendsList()//刷新好友列表
                             //缓存选择聊天对象信息
                             sessionEffect().createSessions({
-                                session_type: 'personal',
+                                accept_type: 'personal',
                                 accept_code: result.send_code,
                             })
                             break;
                         case "create_group":
-                            store.commit("sessionList/addSession", {
-                                content: "快来和新朋友聊聊吧!",
-                                created_at: '',
-                                head_image: result.head_image,
-                                message_type: "group",
-                                nickname: result.nickname,
-                                code: result.accept_code,
-                                unreadCount: 1,
-                                username: result.nickname,
-                            })
-                            store.commit("msgNotice/addOneSessionNumber")
+                            console.log('创建群聊消息');
                             break;
                     }
                 } else {

@@ -1,6 +1,6 @@
 <template>
   <div id="setting">
-    <div style="padding-top: 20%">
+    <div style="padding-top: 25%">
       <el-tabs tab-position="left">
         <el-tab-pane label="账号设置">
           <Account class="account-settings"></Account>
@@ -34,7 +34,7 @@ import Currency from "../../components/setting/Currency.vue";
 
 #setting {
   background-color: #F5F5F5;
-  width: 939px;
+  width: 938px;
   height: 800px;
 
   .account-settings {

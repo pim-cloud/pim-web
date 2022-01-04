@@ -3,33 +3,40 @@
     <div class="personal-detail">
       <div class="detail-name-sex-img">
         <div class="detail-name-sex fl">
-          <div class="detail-name fl">{{ detail.nickname }}</div>
+          <div class="detail-name fl">{{ detail.username }}</div>
           <div class="detail-sex fl">
-            <img src="https://www.17sucai.com/preview/731884/2019-12-09/H5/common/img/man.jpg" />
+            <img
+              src="https://www.17sucai.com/preview/731884/2019-12-09/H5/common/img/man.jpg"
+            />
           </div>
           <div class="detail-sign fl">{{ detail.autograph }}</div>
           <div class="clear"></div>
         </div>
         <div class="detail-head-img fr">
-          <el-avatar shape="square" :size="60" :src="detail.head_image" @error="errorHandler"></el-avatar>
+          <el-avatar
+            shape="square"
+            :size="60"
+            :src="detail.head_image"
+            @error="errorHandler"
+          ></el-avatar>
         </div>
       </div>
       <div class="base-data">
         <label>备&nbsp;&nbsp;&nbsp;注</label>
         <div class="value fl">
-          <!-- <el-input
-            v-model='detail.config.remarks'
+          <el-input
+            v-model="remarks"
             clearable
             size="mini"
-            @blur="blur_update_remarks"
-            @change="change_update_remarks"
+            @blur="blur_remarks"
+            @change="change_remarks"
             placeholder="点击添加备注"
-          /> -->
+          />
         </div>
         <div class="clear"></div>
 
         <label>PIM号</label>
-        <div class="value fl">{{ detail.code }}</div>
+        <div class="value fl">{{ detail.username }}</div>
         <div class="clear"></div>
 
         <label>邮&nbsp;&nbsp;&nbsp;箱</label>
@@ -41,38 +48,46 @@
         <div class="clear"></div>
       </div>
       <div class="btn-send-msg">
-        <div
-          @click="sessionEffect().createSessions({ session_type: 'personal', accept_code: detail.code, 'nickname': detail.nickname, 'remarks': detail.remarks })"
-        >发送消息</div>
+        <div @click="createSession({ type: 'personal', code: select.code })">
+          发送消息
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref} from "vue";
 import { useStore } from "vuex";
 import memberEffect from "../../utils/memberEffect";
-import sessionEffect from "../../utils/sessionEffect"
+import sessionEffect from "../../utils/sessionEffect";
+
+const createSession = sessionEffect().createSessions;
 
 const store = useStore();
-
-const detail = computed(() => store.getters["friendsList/getDetail"])
+const select = computed(() => store.getters["friendsList/select"]);
+const detail = computed(() => store.state.common.friendList[select.value.code])
+const remarks = ref(detail.value.showName)
 
 //修改好友备注
-const blur_update_remarks = () => {
-  update_friend_remarks()
-}
-const change_update_remarks = () => {
-  update_friend_remarks()
-}
-const update_friend_remarks = () => {
-  if (detail.value.remarks == '' || detail.value.remarks === 'undefined') {
+const blur_remarks = () => {
+  update_remarks();
+};
+const change_remarks = () => {
+  update_remarks();
+};
+const update_remarks = () => {
+  if (remarks == "" || remarks === "undefined") {
     return false;
   }
-  memberEffect().editContacts({ 'type': 'remarks', 'acceptCode': detail.value.code, 'remarks': detail.value.remarks })
-}
-
+  memberEffect().editContacts({
+    type: "remarks",
+    accept_type: "personal",
+    id: detail.value.id,
+    acceptCode: detail.value.code,
+    configValue: remarks.value,
+  });
+};
 </script>
 
 <style lang="scss">

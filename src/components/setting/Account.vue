@@ -2,9 +2,9 @@
   <div>
     <!--图片裁剪上传组件-->
     <Cutting>
-      <el-avatar shape="square" :size="100" :fit="fit" :src="member.head_image"></el-avatar>
+      <el-avatar shape="square" :size="100"  :src="member.head_image"></el-avatar>
     </Cutting>
-    <p style="font-size: 18px;">{{ member.nickname }}</p>
+    <p style="font-size: 18px;">{{ member.username }}</p>
     <p>{{ member.uid }}</p>
     <button class="close" @click="close">退出登录</button>
   </div>
@@ -51,6 +51,7 @@ export default {
 
 <style scoped lang="scss">
 .close {
+  margin-top: 10px;
   width: 105px;
   height: 25px;
   border: none;

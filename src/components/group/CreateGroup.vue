@@ -1,9 +1,9 @@
 <template>
   <el-dropdown-item @click="onShow">创建群聊</el-dropdown-item>
-  <el-dialog v-model="showStatus" @close="clearData" width="550px" append-to-body>
+  <el-dialog v-model="showStatus" width="550px" append-to-body>
     <div class="creat-group">
       <div class="friend-list">
-        <div v-for="(value,initials) in contactFriends" :key="initials">
+        <!-- <div v-for="(value,initials) in friendsList" :key="initials">
           <div class="labels">{{ initials }}</div>
           <div
             class="list"
@@ -28,26 +28,56 @@
               <img v-else src="https://cdn.jksusu.cn/gouxuaned.png" />
             </div>
           </div>
+        </div> -->
+        <div
+          class="list"
+          v-for="(item, index) in friendsList"
+          :key="index"
+          @click="select(item)"
+          :class="{ active: selectCode === item.code }"
+        >
+          <el-avatar
+            style="margin-left: 8px"
+            shape="square"
+            :size="42"
+            :src="item.head_image"
+            @error="errorHandler"
+          ></el-avatar>
+          <div class="nickname">
+            <p>{{ item.showName }}</p>
+          </div>
+          <div style="width: 60px"></div>
+          <div class="gouxuan" :class="{ active: selectCode === item.code }">
+            <img
+              v-if="!selectList[item.code]"
+              src="https://cdn.jksusu.cn/gouxuan.png"
+            />
+            <img v-else src="https://cdn.jksusu.cn/gouxuaned.png" />
+          </div>
         </div>
       </div>
 
       <div class="selected-list">
-        <p
-          style="text-align: center;"
-        >{{ selectNumber === 0 ? '请勾选需要添加的联系人' : '已选择' + selectNumber + '个联系人' }}</p>
+        <p style="text-align: center">
+          {{
+            selectNumber === 0
+              ? "请勾选需要添加的联系人"
+              : "已选择" + selectNumber + "个联系人"
+          }}
+        </p>
 
         <div class="selectLists">
-          <div v-for="(item,index) in selectList" :key="index">
+          <div v-for="(item, index) in selectList" :key="index">
             <div class="list">
               <el-avatar
-                style="margin-left: 8px;"
+                style="margin-left: 8px"
                 shape="square"
                 :size="42"
                 :src="item.head_image"
                 @error="errorHandler"
               ></el-avatar>
               <div class="nickname">
-                <p>{{ item.nickname }}</p>
+                <p>{{ item.showName }}</p>
               </div>
               <div style="width: 60px"></div>
               <div class="gouxuan" @click="select(item)">
@@ -69,70 +99,72 @@
 <script setup>
 import { ElMessage, ElMessageBox } from "element-plus";
 import memberEffect from "../../utils/memberEffect";
+import commonEffect from "../../utils/commonEffect";
 import Item from "../../components/list/Item.vue";
 import { createGroup } from "../../api/relation";
 import { computed, reactive, ref } from "vue";
-import { useStore } from 'vuex'
+import { useStore } from "vuex";
 
 //计算属性
-const store = useStore()
-const { contactFriends } = memberEffect()
-const getMember = computed(() => store.state.member)
+const store = useStore();
+const { contactFriends } = memberEffect();
+const friendsList = commonEffect().friendLists;
+const getMember = computed(() => store.state.member);
 
-const selectCode = ref('')//当前选中code，渲染选中class
-const selectNumber = ref(0)
-const selectList = reactive({})
+const selectCode = ref(""); //当前选中code，渲染选中class
+const selectNumber = ref(0);
+const selectList = reactive({});
 const showStatus = ref(false);
 
 const onShow = () => {
-  showStatus.value ? showStatus.value = false : showStatus.value = true
-}
+  showStatus.value ? (showStatus.value = false) : (showStatus.value = true);
+};
 //列表选择
 const select = (row) => {
   const { code } = row;
-  selectCode.value = code
+  selectCode.value = code;
   if (!selectList[code]) {
-    selectNumber.value++
-    selectList[code] = row
+    selectNumber.value++;
+    selectList[code] = row;
   } else {
-    selectNumber.value--
-    delete selectList[code]
+    selectNumber.value--;
+    delete selectList[code];
   }
-}
+};
 
 //创建群聊
 const setGroupName = () => {
   if (JSON.stringify(selectList) == "{}") {
     return false;
   }
-  ElMessageBox.prompt('请设置群名', { confirmButtonText: '确定', cancelButtonText: '取消' })
-    .then(({ value }) => {
-      createGroups(value)
-    })
-}
+  ElMessageBox.prompt("请设置群名", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+  }).then(({ value }) => {
+    createGroups(value);
+  });
+};
 const createGroups = (nickname) => {
   var arr = [];
   for (let key in selectList) {
-    arr.push(key)
+    arr.push(key);
   }
   // group info
   const data = {
-    head_image: 'timg.jfif',
+    head_image: "timg.jfif",
     nickname: nickname,
     group_member: arr,
-  }
-  console.log(data);
+  };
   createGroup(data).then((res) => {
     if (res.code != 200) {
-      ElMessage.error("创建失败")
-      return
+      ElMessage.error("创建失败");
+      return;
     }
     const { getContactGroupLists } = memberEffect();
-    getContactGroupLists()
-    onShow()
+    getContactGroupLists();
+    onShow();
   });
-}
-
+};
 </script>
 
 <style scoped lang="scss">
@@ -158,7 +190,7 @@ const createGroups = (nickname) => {
   display: flex;
 
   .active {
-    background-color: #d5d4d4;
+    background-color: #c5c5c6;
   }
 
   .friend-list {
@@ -238,7 +270,7 @@ const createGroups = (nickname) => {
         border-radius: 5px;
         background: #aeacaa;
       }
-      
+
       .list {
         display: flex;
         align-items: center;
@@ -264,6 +296,9 @@ const createGroups = (nickname) => {
           width: 20px;
           height: 20px;
           float: right;
+        }
+        &:hover {
+          background-color: #d9d8d9;
         }
       }
     }
@@ -300,7 +335,7 @@ const createGroups = (nickname) => {
         margin-left: 10px;
 
         &:hover {
-          background-color: #efefef;
+          background-color: #d9d8d9;
         }
       }
     }

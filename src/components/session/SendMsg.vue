@@ -2,11 +2,11 @@
   <div class="m-text">
     <div class="m-tool">
       <div class="m-tool__item">
-        <Expression @addIcon="addIcon" style="margin-left: 10px;"></Expression>
+        <discord-picker style="" gif-format="md" @emoji="setEmoji" />
       </div>
-      <div class="m-tool__item" style="margin-top: 3px;">
+      <div class="m-tool__item">
         <el-upload
-          class="m-tool__item"
+          style="padding-top: 6px"
           accept="image/*"
           :before-upload="beforeUpload"
           :show-file-list="false"
@@ -35,9 +35,13 @@
         </el-upload>
       </div>
     </div>
-    <EmojiPicker :native="true" @select="onSelectEmoji" />
     <div class="text">
-      <textarea placeholder="Enter" v-model="text" @keyup="inputing"></textarea>
+      <textarea
+        id="textarea"
+        placeholder="Enter"
+        v-model="text"
+        @keyup="inputing"
+      ></textarea>
     </div>
     <div class="send-btn">
       <button @click="inputing({ keyCode: 13 })">发送</button>
@@ -47,89 +51,123 @@
 
 <script setup>
 import { sendMessage, fileUpload } from "../../api/message";
-import Expression from "../dropdown/expression.vue";
+import DiscordPicker from "vue3-discordpicker";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
+import dayjs from "dayjs";
 
 const store = useStore();
-const accept = computed(() => store.getters["sessionList/getSelectInfo"])
-const send = computed(() => store.getters.getMemberInfo)
+const accept = computed(() => store.getters["sessionList/select"]);
+const send = computed(() => store.getters.member);
 
-const svgSize = 20
-const svgFill = '#4C4C4C'
+const svgSize = 20;
+const svgFill = "#4C4C4C";
 const text = ref("");
 
-
-const addIcon = (emoji) => {
-  let va = ''
-  if (text.value != "") {
-    console.log(text.value);
-    text.value = text.value + emoji
+//表情插入
+const setEmoji = (emoji) => {
+  const textarea = document.querySelector("#textarea");
+  if (textarea.selectionStart || textarea.selectionStart === 0) {
+    let startPos = textarea.selectionStart;
+    let endPos = textarea.selectionEnd;
+    text.value =
+      textarea.value.substring(0, startPos) +
+      emoji +
+      textarea.value.substring(endPos, textarea.value.length);
   } else {
-    text.value = emoji
+    text.value = emoji;
   }
-}
-
-var timer = new Date(+new Date() + 8 * 3600 * 1000).toJSON().substr(0, 19).replace("T", " ");
+};
 
 //发送文本
 const inputing = async (e) => {
   if (e.keyCode === 13 && text.value.length) {
-
     let content = text.value;
     text.value = "";
-    const message = {
-      main_code: send.value.code,
-      accept_code: accept.value.accept_code,
-      accept_type: accept.value.session_type,
-      message_type: 'chat',
-      content: content,
-      content_type: "text",
-    };
-
-    store.commit('sessionList/addMessage', message)
-
-    try {
-      await sendMessage(message)
-    } catch (error) {
-      console.log(error)
-    }
+    sends({ content: content, content_type: "text" });
   }
 };
 
 // 发送图片
 const beforeUpload = async (file) => {
-
-  const accept = store.getters["sessionList/getSelectSessionInfo"];
-  const send = store.state.member;
-
   const formData = new FormData();
   formData.append("file", file);
-  const result = await fileUpload(formData)
-  const { path } = result.data
-
-  const message = {
-    send_code: send.value.code,
-    accept_code: accept.value.accept_code,
-    accept_type: accept.value.session_type,
-    content: 'http://' + path,
-    content_type: "picture",
-    message_type: 'chat',
-    created_at: timer,
-  };
-  store.commit('sessionList/addMessage', message)
-
-  try {
-    await sendMessage(message)
-    text.value = "";
-  } catch (error) {
-    text.value = "";
-  }
+  const result = await fileUpload(formData);
+  const { path } = result.data;
+  sends({ content: path, content_type: "picture" });
 };
 
+const sends = async (data) => {
+  if (data.content.replace(/\s*/g, "") === "") {
+    return false;
+  }
+  let msg = {
+    main_code: send.value.code,
+    accept_code: accept.value.accept_code,
+    accept_type: accept.value.accept_type,
+    content: data.content,
+    content_type: data.content_type,
+    message_type: "chat",
+    created_at: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+  };
+  
+  store.commit("sessionList/addMessage", msg);
+
+  try {
+    await sendMessage(msg);
+  } catch (error) {
+    console.log(TypeError);
+  }
+};
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
+.vue3-emojipicker {
+  .right-0 {
+    right: -200px !important;
+  }
+  .relative {
+    .mt-4 {
+      /* margin-top: 1rem; */
+      margin-top: 0 !important;
+    }
+  }
+  .vue3-discord-emojipicker {
+    height: 340px !important;
+    width: 380px !important;
+  }
+  .vue3-discord-emojipicker {
+    background: #ffffff !important;
+  }
+  .bg-grey-400 {
+    --tw-bg-opacity: 1;
+    background-color: #ffffff !important;
+  }
+  .bg-grey-700 {
+    background-color: #ffffff !important;
+  }
+  .bg-grey-600 {
+    background-color: #ffffff !important;
+  }
+  .vue3-discordpicker__container {
+    height: 100%;
+  }
+  .px-5 {
+    display: none;
+  }
+  .overflow-auto {
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      height: 3px;
+      border-radius: 5px;
+      background: #ffffff;
+    }
+  }
+}
+
 .m-text {
   width: 688px;
   height: 160px;
@@ -181,7 +219,7 @@ const beforeUpload = async (file) => {
 
   textarea {
     height: 63px;
-    width: 648px;
+    width: 100%;
     padding-left: 20px;
     padding-right: 20px;
     font-size: 15px;

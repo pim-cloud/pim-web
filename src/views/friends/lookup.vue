@@ -5,13 +5,17 @@
     </div>
     <div class="news-friends-search-input flr">
       <el-input
-        placeholder="请输入"
+        placeholder="请输入邮箱或者pim号"
         v-model="keyword"
         class="input-with-select"
         style="margin-top: 20px"
       >
         <template #prepend>
-          <el-select v-model="select_type" placeholder="选择" style="width: 80px">
+          <el-select
+            v-model="select_type"
+            placeholder="选择"
+            style="width: 80px"
+          >
             <el-option label="个人" value="personal"></el-option>
             <el-option label="群组" value="group"></el-option>
           </el-select>
@@ -24,10 +28,17 @@
 
     <div class="news-friends-search-list flr">
       <div v-for="(item, index) in list" :key="index" class="news-search-list">
-        <el-avatar shape="square" :size="50" :src="item.head_image" @error="errorHandler"></el-avatar>
+        <el-avatar
+          shape="square"
+          :size="50"
+          :src="item.head_image"
+          @error="errorHandler"
+        ></el-avatar>
         <div class="news-search-info">
-          <p>用户名：{{ item.nickname }}</p>
-          <p style="font-size: 12.5px;color: #999;">签名：{{ item.autograph }}</p>
+          <p>pim：{{ item.username }}</p>
+          <p style="font-size: 12.5px; color: #999">
+            签名：{{ item.autograph }}
+          </p>
         </div>
         <div class="news-friends-status" @click="add(item.code)">
           <button>发送</button>
@@ -39,49 +50,46 @@
 
 <script setup>
 import { requestAddFriends, search } from "../../api/relation";
-import { Search } from '@element-plus/icons'
+import { Search } from "@element-plus/icons";
 import { ElMessage } from "element-plus";
-import { computed, ref } from 'vue';
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
-const member = computed(() => store.getters["getMemberInfo"])
+const member = computed(() => store.getters["member"]);
 
-const select_type = ref('personal')
-const keyword = ref('')
-const list = ref('')
-
+const select_type = ref("personal");
+const keyword = ref("");
+const list = ref("");
 
 const searchs = () => {
-  list.value = ''
+  list.value = "";
   if (select_type.value && keyword.value) {
     const data = {
       keyword: keyword.value,
       accept_type: select_type.value,
     };
     search(data).then((res) => {
-      if (res.code === 200 && res.data != '') {
+      if (res.code === 200 && res.data != "") {
         list.value = res.data;
-        return ElMessage.success('搜索成功')
+        return ElMessage.success("搜索成功");
       }
-      ElMessage.error('搜索结果为空')
+      ElMessage.error("搜索结果为空");
     });
   }
-}
+};
 
 const add = (accept_code) => {
-  if (select_type.value === 'personal') {
+  if (select_type.value === "personal") {
     let data = {
       accept_code: accept_code,
       remarks: "hello",
     };
-    console.log(data);
-    requestAddFriends(data).then(() => {
+    requestAddFriends(data).then((res) => {
       ElMessage.success("请求发送成功！");
-    }
-    );
+    });
   }
-}
+};
 </script>
 
 <style scoped lang="scss">

@@ -9,13 +9,16 @@
         v-if="newFriendLists == ''"
       >{{ newFriendLists == '' ? '暂时没有新朋友' : '' }}</p>
 
-      <div class="news-friends-search-list flr">
+      <div class="news-friends-search-list">
         <div v-for="(item, index) in newFriendLists" :key="index" class="news-search-list">
-          <el-avatar shape="square" :size="50" :src="item.send_head_image" @error="errorHandler"></el-avatar>
+          <el-avatar shape="square" :size="50" :src="item.head_image" @error="errorHandler"></el-avatar>
           <div class="news-search-info">
-            <p>用户名：{{ item.send_nickname }}</p>
+            <p>pim:{{ item.username }}</p>
             <p style="font-size: 12.5px;color: #999;">备注：{{ item.remarks }}</p>
           </div>
+        <div class="time">
+          <p>{{dayjs(item.created_at).format("YYYY年MM月DD日 HH:mm")}}</p>
+        </div>
           <div class="news-friends-status" @click="add(item.code)">
             <p
               v-if="item.status === 'agree'"
@@ -30,28 +33,23 @@
 </template>
 
 <script setup>
-import { friendRequestProcessing, getFriendsRequestList } from "../../api/relation";
+import { friendRequestProcessing } from "../../api/relation";
 import sessionEffect from "../../utils/sessionEffect";
-import memberEffect from "../../utils/memberEffect";
+import noticeEffect from "../../utils/noticeEffect";
+import { onMounted, computed } from "vue";
 import { ElMessage } from "element-plus";
-import { ref, onMounted } from "vue";
+import store from "../../store";
+import dayjs from "dayjs";
 
 onMounted(() => {
-  getApplyList();
+  sessionEffect().setNewFriendList()
 })
 
-const newFriendLists = ref('');
+const newFriendLists = computed(()=>store.state.sessionList.newFriendList)
 
-
-const getApplyList = () => {
-  getFriendsRequestList().then((res) => {
-    if (res.code === 200) {
-      newFriendLists.value = res.data;
-    }
-  });
-}
 
 const updateApply = (item, status) => {
+  noticeEffect().setNewsFriendList(0)//刷新未读消息
   //接收人和发送人在这里要互换一下
   let data = {
     main_code: item.accept_code,
@@ -61,7 +59,7 @@ const updateApply = (item, status) => {
     record_id: item.record_id,
   };
   friendRequestProcessing(data).then(() => {
-    getApplyList();
+    sessionEffect().setNewFriendList()
     ElMessage.success("处理成功！");
     if (status === "agree") {
       //添加到会话列表
@@ -69,8 +67,6 @@ const updateApply = (item, status) => {
         session_type: 'personal',
         accept_code: item.send_code,
       })
-      //更新本地消息列表
-      memberEffect().getContactFriendsList()
     }
   });
 }
@@ -96,24 +92,31 @@ const updateApply = (item, status) => {
   }
 
   .news-friends-search-list {
-    height: 440px;
+    height: 640px;
 
     .news-search-list {
+      display: flex;
+      align-items: center;
       height: 69px;
-      //width: 400px;
       border-bottom: solid 1px #e7e7e7;
-      margin-left: 10%;
-      margin-right: 10%;
+      margin: 0 10% 0 10%;
 
       .news-search-info {
+        line-height: 30px;
         height: 60px;
-        display: inline-block;
+        max-width: 200px;
+        width: 200px;
+        min-width: 200px;
         margin-left: 20px;
       }
-
+      .time {
+        text-align: center;
+        width: 150px;
+        color: #bdbaba;
+        font-size: 12px;
+      }
       .news-friends-status {
-        display: inline-block;
-        float: right;
+        margin-left: 00px;
         padding: 22px;
 
         button {

@@ -20,7 +20,7 @@
       </div>
       <div class="group-send">
         <button
-          @click="createSessions({ session_type: 'group', accept_code: detail.detail.code, 'nickname': detail.detail.nickname, 'remarks': '' })"
+          @click="createSessions({ type: 'personal', code: detail.code })"
         >发送消息</button>
       </div>
     </div>
@@ -33,7 +33,7 @@ import { computed } from 'vue'
 import sessionEffect from '../../utils/sessionEffect'
 
 const store = useStore();
-const detail = computed(() => store.getters["friendsList/getDetail"])
+const detail = computed(() => store.getters["friendsList/select"])
 
 const { createSessions } = sessionEffect();
 

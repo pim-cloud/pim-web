@@ -1,49 +1,49 @@
 import store from "../store";
 import router from "../router";
 import { getMsgRecord } from "../api/message";
+import { getFriendsRequestList } from '../api/relation';
 import { createSession, deleteSession, getSessionLists, editSession, toppingSession } from "../api/session";
 
 const sessionEffect = () => {
     //获取会话列表
     const sessionLists = () => {
-        store.dispatch('sessionList/saveList', '')
         getSessionLists().then((res) => {
             store.dispatch('sessionList/saveList', res["data"])
         });
     }
     //增加一条会话
     const createSessions = (data) => {
-      // if (data.accept_code in store.state.sessionList.list) {
-      //   router.push("/home");
-      //   return false
-      // }
       createSession({
-          acceptCode: data.accept_code,
-          nickname: data.nickname,
-          remarks: data.remarks,
-          sessionType: data.session_type,
+          acceptCode: data.code,
+          sessionType: data.type,
         }).then((res) => {
           if (res.code === 200) {
             router.push("/home");
-            store.commit("sessionList/setSelectInfo", {
+            store.commit("sessionList/setSelect", {
               session_id: res.data.session_id,
-              accept_code: data.accept_code,
-              nickname: res.data.accept_info.nickname,
-              remarks: data.remarks,
-              session_type: data.session_type,
+              accept_code: data.code,
+              accept_type: data.type,
             });
-            store.commit("sessionList/addSession", res.data); //添加会话
+             //添加会话
+            store.commit("sessionList/addSession", { 
+              accept_code: data.code, 
+              accept_type: data.type, 
+              session_id: res.data.session_id,
+              last_time:res.data.last_time,//上一条消息时间
+              last_message:res.data.last_message,//上一条消息
+              last_message_type:res.data.last_message_type,//上一条消息类型
+            });
             //获取聊天记录
-            getMsgRecords(data.accept_code, data.session_type, 1, 20);
+            getMsgRecords(data.code, data.type, 1, 20);
           }
         });
     }
    
     //获取消息记录，储存在本地缓存
-    const getMsgRecords = (acceptCode,sessionType,page,perPage) => {
+    const getMsgRecords = (acceptCode,acceptType,page,perPage) => {
         getMsgRecord({
           acceptCode: acceptCode,
-          sessionType: sessionType,
+          acceptType: acceptType,
           page: page,
           perPage: perPage,
         }).then((res) => {
@@ -54,7 +54,6 @@ const sessionEffect = () => {
     }
     //删除一条会话
     const deleteSessions = (acceptCode, sessionId) => {
-        console.log("接收到的code是***" + acceptCode);
         store.dispatch("sessionList/deleteSession", acceptCode);
         deleteSession({ sessionId: sessionId })
     };
@@ -69,6 +68,13 @@ const sessionEffect = () => {
       toppingSession(data)
     }
 
+    const setNewFriendList = () => {
+      getFriendsRequestList().then((res) => {
+        if (res.code === 200) {
+          store.commit("sessionList/setNewFriendList", res.data)
+        }
+      });
+    }
 
     return {
       setToppings,
@@ -77,6 +83,7 @@ const sessionEffect = () => {
         createSessions,
         deleteSessions,
         getMsgRecords,
+      setNewFriendList,
     }
 }
 export default sessionEffect

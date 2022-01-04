@@ -42,14 +42,11 @@ service.interceptors.response.use(
     },
     error => {
         if (error.response) {
-            this.$router.replace({
-                path: "/login",
-                query: { redirect: this.$router.currentRoute.fullPath } //登录成功后跳入浏览的当前页面
-            });
             switch (error.response.status) {
                 case 401:
                     ElMessage.error('token过期，请重新登录')
                     store.commit("delToken");
+                    this.$router.replace({path: "/login"});
                     break;
                 case 500:
                     ElMessage.error('服务器暂时无响应');

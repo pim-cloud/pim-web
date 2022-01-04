@@ -1,60 +1,88 @@
 <template>
   <div class="session-page">
     <div class="page-top">
-      <div class="page-top-name">{{ detail.remarks ? detail.remarks : detail.nickname }}</div>
+      <div class="page-top-name">
+        {{ showName }}
+      </div>
       <slide-right />
     </div>
     <div class="page-center">
       <div class="message" id="m-message">
         <ul>
           <a>
-            <p style="text-align: center">查看更多消息</p>
+            <!-- <p style="text-align: center">查看更多消息</p> -->
           </a>
-          <message :data='messageList' :code="code"/>
+          <message
+            v-for="(item, index) in messageList"
+            :key="index"
+            :data="item"
+            :member="member"
+            :accept="messageInfo.accept"
+          />
         </ul>
       </div>
     </div>
     <el-dialog v-model="centerDialogVisible" width="40%" center>
-      <img style="width: 95%;height: 80%" :src="url" />
+      <img style="width: 95%; height: 80%" :src="url" />
     </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, computed, onUpdated, watch } from 'vue'
-import Message from '../message/message.vue';
-import SlideRight from './SlideRight.vue';
+import { onMounted, ref, computed, onUpdated, watch } from "vue";
+import Message from "../message/message.vue";
+import SlideRight from "./SlideRight.vue";
 import { useStore } from "vuex";
 
 onMounted(() => {
-  scroll()
-})
+  assemble();
+  scroll();
+});
 
 onUpdated(() => {
-  scroll()
-})
+  scroll();
+});
+
 const store = useStore();
-const code = computed(() => store.getters.getMemberInfo.code)
-const messageList = computed(() => store.getters['sessionList/getMessageLists'])
-const detail = computed(() => store.getters["sessionList/getSelectInfo"]);
+const showName = ref("");
+const member = computed(() => store.getters["member"]);
+const select = computed(() => store.getters["sessionList/select"]);
+const messageList = computed(() => store.getters["sessionList/messageList"]);
+const messageInfo = computed(() => store.getters["sessionList/messageInfo"]);
 
+//监听选择
+watch(select.value, () => {
+    assemble();
+});
 
-console.log(messageList.value);
+const assemble = () => {
+  let accept_code = select.value.accept_code;
+  if (select.value.accept_type === "personal") {
+    const friendLists = computed(
+      () => store.state.common.friendList[accept_code]
+    );
+    showName.value = friendLists.value.showName;
+  } else {
+    const groupLists = computed(
+      () => store.state.common.groupList[accept_code]
+    );
+    showName.value = groupLists.value.showName;
+  }
+};
 
-const url = ref('');
-const centerDialogVisible = ref(false)
+const url = ref("");
+const centerDialogVisible = ref(false);
 
 const scroll = () => {
   let ele = document.getElementById("m-message");
   if (ele) {
     ele.scrollTop = ele.scrollHeight;
   }
-}
+};
 const showPicture = (url) => {
-  centerDialogVisible.value = true
-  url.value = url
-}
-
+  centerDialogVisible.value = true;
+  url.value = url;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -91,14 +119,14 @@ const showPicture = (url) => {
 
   .page-center {
     width: 100%;
-    height: 580px;
+    height: 380px;
     background-color: #f5f5f5;
 
     .message {
       background-color: #f5f5f5;
       overflow: auto;
-      widows: 100%;
-      height: 100%;
+      width: 688px;
+      height: 580px;
       .image {
         max-width: 288px;
         max-height: 100px;
