@@ -12,7 +12,7 @@
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.19.1",
     "dayjs": "^1.10.7",
-    "element-plus": "^1.2.0-beta.5",
+    "element-plus": "2.2.4",
     "jsencrypt": "^3.2.1",
     "mockjs": "^1.1.0",
     "si-grenoble": "^0.5.0",

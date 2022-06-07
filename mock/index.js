@@ -14,28 +14,6 @@ Mock.mock('/api/login/login', 'post',{
     code: 200,
     data: data.login
 })
-//
-Mock.mock('/api/member/getMemberInfo', 'get', {
-    code: 200,
-    data: [
-      {
-        id:1,
-        head_image:'https://v3.cn.vuejs.org/logo.png',
-        username:'遇见',
-        nickname:'遇见',
-        email:'jksusuppx@qq.com',
-        showName:'遇见',
-        code:'1212121212121',
-        config: {
-          remarks:'哈哈',
-          topping:'',
-          disturb:'',
-          star:'',
-        },
-        type:'personal'
-      }
-    ]
-})
 
 //好友列表
 Mock.mock('/api/contacts/getContactsList', 'get', (config) => {
@@ -70,5 +48,8 @@ Mock.mock('/api/session/create', 'post', {"code":200,"data":{"accept_code":"3368
 //发消息
 Mock.mock('/api/message/sendMessage', 'post', {"code":200,"data":{"msg_id":"16545956368270","created_at":"2022-06-07 17:53:56"}})
 
-
+//获取用户信息
+Mock.mock('/api/member/getMemberInfo', 'get', (config)=>{
+  return {"code":200,"data":{"code":"335089808995008513","username":"jksusu","email":"jksusuppx@qq.com","head_image":"https:\/\/cdn.jksusu.cn\/e556e34793b91c0dbbd01b7ad7dddeb6.png","nickname":"61cd68b420851","autograph":"","created_at":"2021-12-30 16:07:16","updated_at":"2022-05-31 22:23:12"}}
+})
 

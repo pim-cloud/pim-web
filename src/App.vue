@@ -1,19 +1,22 @@
 <template>
   <div class="chat-bg">
     <a target="_blank" href="https://github.com/pim-cloud/pim-service">
-      <img style="position: absolute; top: 0; right: 0; border: 0;z-index: 5"
-           src="https://cdn.jksusu.cn/gotogithub.png"
-           alt="Fork me on GitHub">
+      <img style="position: absolute; top: 0; right: 0; border: 0;z-index: 5" src="https://cdn.jksusu.cn/gotogithub.png"
+        alt="Fork me on GitHub">
     </a>
-    <LeftTab v-if="$route.meta.auth"/>
-    <router-view/>
+    <LeftTab v-if="$route.meta.auth" />
+    <transition name="el-fade-in-linear">
+      <router-view />
+    </transition>
   </div>
 </template>
 <script setup>
 import LeftTab from "./components/tab/LeftTab.vue";
 </script>
 <style>
-html, body, #app {
+html,
+body,
+#app {
   width: 100%;
   height: 100%;
   padding: 0;
@@ -22,7 +25,8 @@ html, body, #app {
 }
 
 body,
-ul, li {
+ul,
+li {
   margin: 0;
   padding: 0;
   list-style: none;
