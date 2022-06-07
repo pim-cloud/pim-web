@@ -15,6 +15,8 @@ import { directive, menusEvent, Vue3Menus } from 'vue3-menus';
 import dayjs from "dayjs"
 import DiscordPicker from 'vue3-discordpicker';
 
+import '../mock/index'
+
 const app = createApp(App)
 app.config.globalProperties.$dayjs = dayjs
 app.use(DiscordPicker);

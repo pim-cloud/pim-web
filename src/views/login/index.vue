@@ -56,6 +56,7 @@ export default {
                 scene: 'web'
               })
             });
+            console.log(result)
             const { token } = result?.data;
             store.commit("setToken", token);
             this.isLoading = false;
