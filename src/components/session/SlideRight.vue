@@ -1,5 +1,6 @@
 <template>
   <div class="page-top-dian" @click="displays(slide)"></div>
+  <transition name="leftToLeft">
     <div v-if="slideStatus" class="sliding-frame">
       <div v-if="select.accept_type == 'personal'" class="person">
         <div class="sliding-frame-top">
@@ -116,6 +117,8 @@
         </div>
       </div>
     </div>
+  </transition>
+
 </template>
 
 <script setup>
@@ -228,6 +231,40 @@ const close = () => {
 </script>
 
 <style scoped lang="scss">
+/*滑入——从左侧*/
+@keyframes slideIn_left {
+  0% {
+    left: 65%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+/*滑出——从左侧*/
+// @keyframes slideOut_left {
+//   0% {
+//     left: 0;
+//   }
+
+//   100% {
+//     left: 0
+//   }
+// }
+
+/*(滑入)——从左侧滑入,从左侧滑出*/
+.leftToLeft-enter-active {
+  animation: slideIn_left 0.5s;
+}
+
+// /*(滑出)——从左侧滑入,从左侧滑出*/
+// .leftToLeft-leave-active {
+//   animation: slideOut_left 0.5s;
+// }
+
+
+
 .page-top-dian {
   display: flex;
   align-items: center;

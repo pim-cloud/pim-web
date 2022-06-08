@@ -1,9 +1,9 @@
 <template>
   <div class="chat-bg">
-    <a target="_blank" href="https://github.com/pim-cloud/pim-service">
+    <!-- <a target="_blank" href="https://github.com/pim-cloud/pim-service">
       <img style="position: absolute; top: 0; right: 0; border: 0;z-index: 5" src="https://cdn.jksusu.cn/gotogithub.png"
         alt="Fork me on GitHub">
-    </a>
+    </a> -->
     <LeftTab v-if="$route.meta.auth" />
     <transition name="el-fade-in-linear">
       <router-view />

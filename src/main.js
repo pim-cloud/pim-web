@@ -16,6 +16,7 @@ import dayjs from "dayjs"
 import DiscordPicker from 'vue3-discordpicker';
 
 import '../mock/index'
+import 'animate.css';
 
 const app = createApp(App)
 app.config.globalProperties.$dayjs = dayjs
