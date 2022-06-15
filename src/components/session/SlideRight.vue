@@ -1,123 +1,38 @@
 <template>
   <div class="page-top-dian" @click="displays(slide)"></div>
-  <transition name="leftToLeft">
-    <div v-if="slideStatus" class="sliding-frame">
-      <div v-if="select.accept_type == 'personal'" class="person">
-        <div class="sliding-frame-top">
-          <div class="frame">
-            <div class="add"></div>
-            <span style>添加</span>
-          </div>
-          <div class="frame">
-            <el-avatar shape="square" :size="42" :src="personal.head_image" @error="errorHandler"></el-avatar>
-            <span>{{ personal.name }}</span>
-          </div>
-        </div>
-        <div class="person-edit">
-          <div class="edit">
-            <p>消息免打扰</p>
-            <el-switch v-model="personal.disturb" active-color="#13ce66"
-              @click="updateConfig('personal', 'disturb', personal.disturb)" />
-          </div>
 
-          <div class="edit">
-            <p>置顶聊天</p>
-            <el-switch v-model="personal.topping" active-color="#13ce66"
-              @click="updateConfig('personal', 'topping', personal.topping)" />
-          </div>
-          <div class="edit">
-            <p>星标朋友</p>
-            <el-switch v-model="personal.star" active-color="#13ce66"
-              @click="updateConfig('personal', 'star', personal.star)" />
-          </div>
+  <div v-if="slideStatus && select.accept_type == 'personal'" class="sliding-frame animate__animated  animate__slideInLeft">
+    <div class="person">
+      <div class="sliding-frame-top">
+        <div class="frame">
+          <div class="add"></div>
+          <span style>添加</span>
+        </div>
+        <div class="frame">
+          <el-avatar shape="square" :size="42" :src="personal.head_image" @error="errorHandler"></el-avatar>
+          <span>{{ personal.name }}</span>
         </div>
       </div>
-
-      <div v-if="select.accept_type == 'group'" class="group juli">
-        <div class="search-group-member">
-          <div class="searchs">
-            <input class="search-input" placeholder="搜索" type="text" @click="input()" />
-            <div class="search-btn">
-              <img src="http://cdn.jksusu.cn/seach.png" />
-            </div>
-          </div>
+      <div class="person-edit">
+        <div class="edit">
+          <p>消息免打扰</p>
+          <el-switch v-model="personal.disturb" active-color="#13ce66"
+            @click="updateConfig('personal', 'disturb', personal.disturb)" />
         </div>
 
-        <div class="slide">
-          <div class="group-member-list">
-            <div class="member">
-              <create-group title="pull_in_group">
-                <div style="
-                  width: 42px;
-                  height: 42px;
-                  background: url(http://cdn.jksusu.cn/page-add.png);
-                  background-size: 100%;
-                "></div>
-              </create-group>
-              <span style>添加</span>
-            </div>
-            <div class="member" v-for="(item, index) in group.members" :key="index">
-              <img style="display: block" :src="item.head_image" />
-              <span>{{ item.nickname }}</span>
-            </div>
-          </div>
-          <div class="setting">
-            <div class="setting-info">
-              <div class="line">
-                <span>群聊名称</span>
-                <div>hahah</div>
-              </div>
-              <div class="line">
-                <spanp>群公告</spanp>
-                <div>hahah</div>
-              </div>
-              <div class="line">
-                <span>备注</span>
-                <div>hahah</div>
-              </div>
-              <div class="line">
-                <span>我在本群的昵称</span>
-                <div>hahah</div>
-              </div>
-            </div>
-
-            <div class="open-and-close">
-              <div class="open-close-label">
-                <p>显示群成员昵称</p>
-              </div>
-              <div class="open-close">
-                <el-switch v-model="group.show_nicknames" active-color="#13ce66" />
-              </div>
-
-              <div class="open-close-label">
-                <p>消息免打扰</p>
-              </div>
-              <div class="open-close">
-                <el-switch v-model="group.dont_disturb" active-color="#13ce66" />
-              </div>
-
-              <div class="open-close-label">
-                <p>置顶聊天</p>
-              </div>
-              <div class="open-close">
-                <el-switch v-model="group.topping" active-color="#13ce66" />
-              </div>
-
-              <div class="open-close-label">
-                <p>保存到通讯录</p>
-              </div>
-              <div class="open-close">
-                <el-switch v-model="group.preservation" active-color="#13ce66" />
-              </div>
-            </div>
-          </div>
-          <div class="sign-out">
-            <button type="button">删除并退出</button>
-          </div>
+        <div class="edit">
+          <p>置顶聊天</p>
+          <el-switch v-model="personal.topping" active-color="#13ce66"
+            @click="updateConfig('personal', 'topping', personal.topping)" />
+        </div>
+        <div class="edit">
+          <p>星标朋友</p>
+          <el-switch v-model="personal.star" active-color="#13ce66"
+            @click="updateConfig('personal', 'star', personal.star)" />
         </div>
       </div>
     </div>
-  </transition>
+  </div>
 
 </template>
 
@@ -228,42 +143,9 @@ const close = () => {
   personal.star = false;
   // group = ''
 };
-</script>
+</script>·
 
 <style scoped lang="scss">
-/*滑入——从左侧*/
-@keyframes slideIn_left {
-  0% {
-    left: 65%;
-  }
-
-  100% {
-    left: 100%;
-  }
-}
-
-/*滑出——从左侧*/
-// @keyframes slideOut_left {
-//   0% {
-//     left: 0;
-//   }
-
-//   100% {
-//     left: 0
-//   }
-// }
-
-/*(滑入)——从左侧滑入,从左侧滑出*/
-.leftToLeft-enter-active {
-  animation: slideIn_left 0.5s;
-}
-
-// /*(滑出)——从左侧滑入,从左侧滑出*/
-// .leftToLeft-leave-active {
-//   animation: slideOut_left 0.5s;
-// }
-
-
 
 .page-top-dian {
   display: flex;
