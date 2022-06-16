@@ -40,6 +40,7 @@ a {
 .chat-bg {
   width: 100%;
   height: 100%;
+  z-index: 0;
   color: #4d4d4d;
   font: 14px/1.4em "Helvetica Neue", Helvetica, "Microsoft Yahei", Arial, sans-serif;
   background: #f5f5f5 url("https://cdn.jksusu.cn/bg.jpg") no-repeat center;

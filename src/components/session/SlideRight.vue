@@ -1,7 +1,8 @@
 <template>
-  <div class="page-top-dian" @click="displays(slide)"></div>
+  <div class="page-top-dian" @click="displays()"></div>
 
-  <div v-if="slideStatus && select.accept_type == 'personal'" class="sliding-frame animate__animated  animate__slideInLeft">
+  <div v-if="slideStatus && select.accept_type == 'personal'"
+    class="sliding-frame animate__animated  animate__slideInLeft">
     <div class="person">
       <div class="sliding-frame-top">
         <div class="frame">
@@ -41,10 +42,10 @@ import { getGroupDetail } from "../../api/relation";
 import { computed, reactive, ref, watch } from "vue";
 import memberEffect from "../../utils/memberEffect";
 import store from "../../store";
-import sessionEffect from "../../utils/sessionEffect";
 
 const slideStatus = ref(false);
 const select = computed(() => store.getters["sessionList/select"]);
+
 
 const personal = reactive({
   name: "",
@@ -146,13 +147,12 @@ const close = () => {
 </script>·
 
 <style scoped lang="scss">
-
 .page-top-dian {
   display: flex;
   align-items: center;
   width: 25px;
   margin-right: 15px;
-  background-image: url("https://cdn.jksusu.cn/diandaindian.png");
+  //background-image: url("https://cdn.jksusu.cn/diandaindian.png");
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -161,10 +161,9 @@ const close = () => {
   width: 250px;
   height: 800px;
   background-color: #f5f5f5;
-  z-index: 1;
+  z-index: -1;
   position: absolute;
   right: -250px;
-  top: 0;
 
   .person {
     width: 200px;
