@@ -1,7 +1,7 @@
 <!--会话列表组件-->
 <template>
   <div class="session_flex">
-    <!-- <div id="session_lists">
+    <div id="session_lists">
       <div class="search">
         <dropdown />
       </div>
@@ -25,12 +25,12 @@
           :class="{ active: select.accept_code === item.accept_code }"
         />
       </div>
-    </div> -->
+    </div>
     <div>
       <div v-if="select.accept_code" style="display: flex; position: relative">
         <div>
           <SessionPage :user="user" />
-          <!-- <SendMsg /> -->
+          <SendMsg />
         </div>
       </div>
       <Welcome v-if="!select.accept_code" />

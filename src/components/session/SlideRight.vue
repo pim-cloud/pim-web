@@ -152,7 +152,7 @@ const close = () => {
   align-items: center;
   width: 25px;
   margin-right: 15px;
-  //background-image: url("https://cdn.jksusu.cn/diandaindian.png");
+  background-image: url("https://cdn.jksusu.cn/diandaindian.png");
   background-repeat: no-repeat;
   background-position: center;
 }
